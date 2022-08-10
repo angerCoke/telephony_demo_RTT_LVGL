@@ -62,4 +62,4 @@ static int lvgl_demo_init(void)
 
     return 0;
 }
-INIT_APP_EXPORT(lvgl_demo_init);
+MSH_CMD_EXPORT(lvgl_demo_init, lvgl demo init);

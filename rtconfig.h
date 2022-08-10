@@ -36,10 +36,10 @@
 /* Memory Management */
 
 #define RT_USING_MEMPOOL
-#define RT_USING_SMALL_MEM
 #define RT_USING_MEMHEAP
 #define RT_MEMHEAP_FAST_MODE
-#define RT_USING_SMALL_MEM_AS_HEAP
+#define RT_USING_MEMHEAP_AS_HEAP
+#define RT_USING_MEMHEAP_AUTO_BINDING
 #define RT_USING_MEMTRACE
 #define RT_USING_HEAP
 /* end of Memory Management */
@@ -252,6 +252,7 @@
 #define AT_CLIENT_NUM_MAX 1
 #define AT_USING_SOCKET
 #define AT_USING_CLI
+#define AT_PRINT_RAW_CMD
 #define AT_CMD_MAX_LEN 128
 #define AT_SW_VERSION_NUM 0x10301
 /* end of Network */
