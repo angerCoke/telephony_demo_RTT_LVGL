@@ -34,12 +34,12 @@ static void lv_bk_widgets(void)
 
     t_dial = lv_tabview_add_tab(tv, "Dial");
     t_msm = lv_tabview_add_tab(tv, "MSM");
-    t_data = lv_tabview_add_tab(tv, "Data");
+    // t_data = lv_tabview_add_tab(tv, "Data");
     t_network = lv_tabview_add_tab(tv, "Network");
 
 
-    // create_network(t_network);
-    // create_msg(t_msm); //TODO
+    create_network(t_network);
+    create_msg(t_msm); //TODO
     create_dial(t_dial);
 
 }

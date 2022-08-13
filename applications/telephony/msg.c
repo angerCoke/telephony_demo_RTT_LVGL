@@ -52,7 +52,7 @@ void create_msg(lv_obj_t * parent)
     lv_obj_t * ta1 = lv_textarea_create(parent);
     lv_obj_set_width(ta1, LV_PCT(100));
     lv_textarea_set_one_line(ta1, true);
-    lv_textarea_set_placeholder_text(ta1, "contector");
+    lv_textarea_set_placeholder_text(ta1, "Contact");
 
     lv_obj_t * ta2 = lv_textarea_create(parent);
     lv_obj_set_width(ta2, LV_PCT(100));

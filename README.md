@@ -4,8 +4,8 @@ When discussing telephony-related applications, Android is the first thing most 
 
 RT-Thread is a real-time operating system with very rich third-party components, [AT Component](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/at/at)provides a relatively complete AT command parsing interface and supports many mainstream 4G modules. [LVGL](https://lvgl.io/) is the most popular free and open source embedded graphics library to create beautiful UIs for any MCU, MPU and display type. It will easy beed called by APP in RT-Thread, if we develop a suite of API&Demo based on AT component of RT-Thread and LVGL. This demo will is a shallow attempt.
 
-![RT-Thread](https://club.rt-thread.org/assets/addons/askrt/img/logo.png)  
-![LVGL](https://lvgl.io/assets/images/logo_lvgl_white.png)
+![RT-Thread](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/rtt.PNG)  
+![LVGL](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/logo_lvgl.png)
 
 ## Feature
 We focus on dial, message, network copoments, there are features to implement：
@@ -14,10 +14,12 @@ We focus on dial, message, network copoments, there are features to implement：
 3. network info, like MCC, MNC, ICCID, IMSI and Cell ID.
 ## Architecture
 Using Air724 as the 4G module, NK-N9H is connected to the 4G module through uart1
-![](./)
+
+![](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/arch-hardware.png)
 
 As for software, the two components of LVGL and AT are mainly integrated, and the official has adapted the LVGL driver for us and can be used directly.
 
+![](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/arch-software.png)
 ## Implement
 ### Dial
 #### Success process
@@ -125,7 +127,18 @@ The process of get network information is relatively simple, and it is all AT co
 
 
 ## Presentation
+### Assembly Display
+![](./figure/assembly.jpg)
 
-## Code
+### Dial Page
+![](./figure/dial_page.jpg)
+### Message Page
+![](./figure/msg_page.jpg)
+
+### Network Page
+![](./figure/network_info.jpg)
+### Video
+[Bilibili](https://www.bilibili.com/video/BV1wd4y1P7gZ?spm_id_from=333.337.search-card.all.click)
 
 ## Summary
+I would like to thank Nuvoton & RT-Thread & LVGL for launching this activity, because it allowed me to experience a quick prototyping function like building blocks. Due to my general aesthetics, coupled with the fact that I came into contact with LVGL for the first time, I apologize for making things that don't seem to be beautiful at all. Telephone is a very large and very complex system, and this time I have shallowly tried some of the functional development of the dial and network components, and will continue to explore further in the future when there is time and opportunity.
