@@ -14,10 +14,12 @@ We focus on dial, message, network copoments, there are features to implement：
 3. network info, like MCC, MNC, ICCID, IMSI and Cell ID.
 ## Architecture
 Using Air724 as the 4G module, NK-N9H is connected to the 4G module through uart1
-![](figure/arch-hardware.png)
+
+![](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/arch-hardware.png)
 
 As for software, the two components of LVGL and AT are mainly integrated, and the official has adapted the LVGL driver for us and can be used directly.
-![](figure/arch-software.png)
+
+![](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/arch-software.png)
 ## Implement
 ### Dial
 #### Success process
@@ -125,6 +127,18 @@ The process of get network information is relatively simple, and it is all AT co
 
 
 ## Presentation
+### Assembly Display
+![](./figure/assembly.jpg)
+
+### Dial Page
+![](./figure/dial_page.jpg)
+### Message Page
+![](./figure/msg_page.jpg)
+
+### Network Page
+![](./figure/network_info.jpg)
+### Video
+[Bilibili](https://www.bilibili.com/video/BV1wd4y1P7gZ?spm_id_from=333.337.search-card.all.click)
 
 ## Summary
 I would like to thank Nuvoton & RT-Thread & LVGL for launching this activity, because it allowed me to experience a quick prototyping function like building blocks. Due to my general aesthetics, coupled with the fact that I came into contact with LVGL for the first time, I apologize for making things that don't seem to be beautiful at all. Telephone is a very large and very complex system, and this time I have shallowly tried some of the functional development of the dial and network components, and will continue to explore further in the future when there is time and opportunity.
