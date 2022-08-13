@@ -14,10 +14,10 @@ We focus on dial, message, network copoments, there are features to implement：
 3. network info, like MCC, MNC, ICCID, IMSI and Cell ID.
 ## Architecture
 Using Air724 as the 4G module, NK-N9H is connected to the 4G module through uart1
-![](./figure/arch-hardware.png)
+![](figure/arch-hardware.png)
 
 As for software, the two components of LVGL and AT are mainly integrated, and the official has adapted the LVGL driver for us and can be used directly.
-![](./figure/arch-software.png)
+![](figure/arch-software.png)
 ## Implement
 ### Dial
 #### Success process
