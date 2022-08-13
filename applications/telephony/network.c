@@ -307,17 +307,17 @@ void create_network(lv_obj_t * parent)
     iccid_label = lv_label_create(cont_row);
 
 
-    cont_row = lv_obj_create(cont_col);
-    lv_obj_set_size(cont_row, 450, 50);
-    lv_obj_align(cont_row, LV_ALIGN_TOP_MID, 0, 5);
-    lv_obj_set_flex_flow(cont_row, LV_FLEX_FLOW_ROW);
+    // cont_row = lv_obj_create(cont_col);
+    // lv_obj_set_size(cont_row, 450, 50);
+    // lv_obj_align(cont_row, LV_ALIGN_TOP_MID, 0, 5);
+    // lv_obj_set_flex_flow(cont_row, LV_FLEX_FLOW_ROW);
 
-    label = lv_label_create(cont_row);
-    lv_label_set_text_fmt(label, "Cell ID: ");
-    cid_label = lv_label_create(cont_row);
+    // label = lv_label_create(cont_row);
+    // lv_label_set_text_fmt(label, "Cell ID: ");
+    // cid_label = lv_label_create(cont_row);
 
 
-    signal_strength = signal_bar_create(parent);
+    // signal_strength = signal_bar_create(parent);
 
     rt_thread_t tid;
 
@@ -353,7 +353,7 @@ static void network_test(void *parameter)
     char *mcc2 = "462";
     network_urc_register();
     refresh_imei();
-    refresh_cid();
+    // refresh_cid();
     refresh_iccid();
     refresh_imsi();
     refresh_plmn();
