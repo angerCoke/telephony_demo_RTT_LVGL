@@ -4,8 +4,8 @@ When discussing telephony-related applications, Android is the first thing most 
 
 RT-Thread is a real-time operating system with very rich third-party components, [AT Component](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/at/at)provides a relatively complete AT command parsing interface and supports many mainstream 4G modules. [LVGL](https://lvgl.io/) is the most popular free and open source embedded graphics library to create beautiful UIs for any MCU, MPU and display type. It will easy beed called by APP in RT-Thread, if we develop a suite of API&Demo based on AT component of RT-Thread and LVGL. This demo will is a shallow attempt.
 
-![RT-Thread](./figure/rtt.PNG)  
-![LVGL](./figure/logo_lvgl.png)
+![RT-Thread](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/rtt.PNG)  
+![LVGL](https://github.com/angerCoke/telephony_demo_RTT_LVGL/tree/integrate/figure/logo_lvgl.png)
 
 ## Feature
 We focus on dial, message, network copoments, there are features to implement：
