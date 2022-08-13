@@ -7,6 +7,8 @@ extern "C" {
 #include "lvgl.h"
 
 void create_network(lv_obj_t * parent);
+void create_msg(lv_obj_t * parent);
+void create_dial(lv_obj_t * parent);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

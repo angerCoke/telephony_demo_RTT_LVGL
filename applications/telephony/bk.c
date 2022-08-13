@@ -38,7 +38,9 @@ static void lv_bk_widgets(void)
     t_network = lv_tabview_add_tab(tv, "Network");
 
 
-    create_network(t_network);
+    // create_network(t_network);
+    // create_msg(t_msm); //TODO
+    create_dial(t_dial);
 
 }
 
