@@ -1,96 +1,131 @@
-# NK-N9H30
-## 1. Introduction
-Nuvoton offers HMI platforms which are embedded with Nuvoton N9H MPU.  The N9H series with ARM926EJ-S core can operate at up to 300 MHz and can drive up to 1024x768 pixels in parallel port. It integrated TFT LCD controller and 2D graphics accelerator, up to 16 million colors (24-bit) LCD screen output, and provides high resolution and high chroma to deliver gorgeous display effects. It embedded up to 64 MB DDR memory, along with ample hardware storage and computing space for excellent design flexibility.
+# Telephony Demo based on LVGL and NK-N9H30
+## Background
+When discussing telephony-related applications, Android is the first thing most people think of. Obviously, the graphics framework and cellular communication solutions offered by Android are undoubtedly the most complete and powerful at present. But when we want to deploy telephony applications in resource-constrained MCUs, especially those with graphical interfaces, there don't seem to be so many options.
 
-[![NK-N9H30](https://i.imgur.com/B04MCCf.png "NK-N9H30")](https://i.imgur.com/B04MCCf.png "NK-N9H30")
+RT-Thread is a real-time operating system with very rich third-party components, [AT Component](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/at/at)provides a relatively complete AT command parsing interface and supports many mainstream 4G modules. [LVGL](https://lvgl.io/) is the most popular free and open source embedded graphics library to create beautiful UIs for any MCU, MPU and display type. It will easy beed called by APP in RT-Thread, if we develop a suite of API&Demo based on AT component of RT-Thread and LVGL. This demo will is a shallow attempt.
 
-### 1.1 MPU specification
-|  | Features |
-| -- | -- |
-| Part NO. | N9H30F61IEC(or N9H30F63IEC) (LQFP216 pin MCP package with DDR (64 MB) |
-| CPU ARCH. | 32-bit ARM926EJ-S |
-| Operation frequency | 300 MHz |
-| Embedded SDRAM size | Built-in 64MB |
-| Crypto engine |  AES, DES,HMAC and SHA crypto accelerator |
-| RMII interface |  10/100 Mbps x2 |
-| USB 2.0 |  High Speed Host/Device x1 |
-| Audio |  Mono microphone / Stereo headphone |
-| Extern storage |  32MB SPI-NOR Flash |
-| SD card slot |  SD |
+![RT-Thread](https://club.rt-thread.org/assets/addons/askrt/img/logo.png)  
+![LVGL](https://lvgl.io/assets/images/logo_lvgl_white.png)
 
-**Notice: Please remember to select corresponding Part NO in NuWriter.**
+## Feature
+We focus on dial, message, network copoments, there are features to implement：
+1. Dial, anwser, hung, and display incoming 
+2. Send and recive message
+3. network info, like MCC, MNC, ICCID, IMSI and Cell ID.
+## Architecture
+Using Air724 as the 4G module, NK-N9H is connected to the 4G module through uart1
+![](./)
 
-### 1.2 Interface
-| Interface |
-| -- |
-| Two RJ45 Ethernet |
-| An USB 2.0 HS Dual role(Host/Device) port |
-| A microSD slot |
-| A 3.5mm Audio connector |
-| An ICE connector |
+As for software, the two components of LVGL and AT are mainly integrated, and the official has adapted the LVGL driver for us and can be used directly.
 
-### 1.3 On-board devices
-| Device | Description | Driver supporting status |
+## Implement
+### Dial
+#### Success process
+```mermaid
+	    sequenceDiagram
+        participant User as User
+	    participant GUI as GUI
+	    participant AT as AT component
+	    participant 4G as  4G Module
+        User ->> GUI: Input number
+        GUI ->>GUI: 
+        User ->> GUI: Push Dial button
+        GUI ->> AT: Dial(number) 
+        AT ->> 4G: ATD
+        4G -->> AT: OK
+        4G -->> AT: CONNECT
+        AT -->> GUI: Success
+        GUI -->> User: Return
+	    
+```
+
+#### Failed process
+```mermaid
+	    sequenceDiagram
+        participant User as User
+	    participant GUI as GUI
+	    participant AT as AT component
+	    participant 4G as  4G Module
+        User ->> GUI: Input number
+        GUI ->>GUI: 
+        User ->> GUI: Push Dial button
+        GUI ->> AT: Dial(number) 
+        AT ->> 4G: ATD
+        4G -->> AT: OK
+        4G -->> AT: NO DIALTONE/BUSY/NO CARRIER/NO ANSWER
+        AT -->> GUI: Fail
+        GUI -->> User: Display cause
+	    
+```
+### Anwser
+```mermaid
+	    sequenceDiagram
+        participant User as User
+	    participant GUI as GUI
+	    participant AT as AT component
+	    participant 4G as  4G Module
+        GUI ->> GUI: Init, register listening RING
+        GUI ->> AT: EnableClip()
+        AT ->> 4G: AT+CLIP=1
+        4G -->> AT: OK
+        AT -->> GUI: return
+        4G ->> AT: RING
+        4G ->> AT: +CLIP: "1360******8",128,,,"TEST",0
+        AT ->> GUI: Call caming
+        GUI ->> User: Show to user
+        User ->> GUI: Anwser
+        GUI ->>AT: anwser()
+        AT ->> 4G: ATA
+        4G -->> AT: OK
+        AT -->> GUI: Return
+        GUI -->> User: Return
+
+	    
+```
+
+### Hang up
+```mermaid
+	    sequenceDiagram
+        participant User as User
+	    participant GUI as GUI
+	    participant AT as AT component
+	    participant 4G as  4G Module
+        GUI ->> GUI: Init, register listening RING
+        GUI ->> AT: EnableClip()
+        AT ->> 4G: AT+CLIP=1
+        4G -->> AT: OK
+        AT -->> GUI: return
+        4G ->> AT: RING
+        4G ->> AT: +CLIP: "1360******8",128,,,"TEST",0
+        AT ->> GUI: Call caming
+        GUI ->> User: Show to user
+        User ->> GUI: Hung up
+        GUI ->>AT: Hung()
+        AT ->> 4G: ATH
+        4G -->> AT: OK
+        AT -->> GUI: Return
+        GUI -->> User: Return
+
+	    
+```
+### Send and Recive Msg
+PDU parsing is a very, very complicated thing, and I may not be able to figure this out for a while and a half, so the short message is only in txt format
+
+### Network information
+The process of get network information is relatively simple, and it is all AT commands sent and received in real time, so only the AT commands used are listed
+
+| Function | Command | Response |
 | -- | -- | -- |
-|Ethernet PHY | IP101GR | Supported |
-|Keypad | K[1, 6] | Supported |
-|LEDs |  | Supported |
-|TFT-LCD panel | 7" inch 24b RGB  | Supported |
-|Touch panel | 7" inch resistive | Supported |
-|Audio Codec | NAU8822, Supports MIC and earphone | Supported |
-|USB Device | VCOM + MStorage | Supported |
-|USB Host | MStorage | Supported |
-|SPI NOR flash | W25Q256JVEQ (32 MB) | Supported |
+| Get PLMN | AT+COPS? | +COPS: \<mode\>[,\<format\>,\<oper\>[,< AcT>>[, <Domain\>]]] OK
+| Get signal strength | AT+CSQ | +CSQ: <rssi>,<ber> OK
+| Get IMEI | AT+CGSN | \<IMEI\> OK
+| Get IMSI | AT+CIMI | \<IMSI\> OK
+| Get ICCID | AT+ICCID | +ICCID:<iccid> OK
 
-## 2. Supported compiler
-Support GCC and MDK IDE/compilers. More information of these compiler version as following:
-| IDE/Compiler  | Tested version            |
-| ---------- | ---------------------------- |
-| MDK        | uVision 5.25.2               |
-| GCC        | 6-2017-q1-update             |
 
-Notice: Please install ICE driver for development and [NuMicro_ARM9_Device_Database_Keil](https://www.nuvoton.com/resource-download.jsp?tp_GUID=SW1820201207155701).
 
-## 3. Program firmware
-### 3.1 SDRAM Downloading using NuWriter
-You can use NuWriter to download rtthread.bin into SDRAM, then run it.
-[![SDRAM Downloading using NuWriter](https://i.imgur.com/UqFvQOb.gif "SDRAM Downloading using NuWriter")](https://i.imgur.com/UqFvQOb.gif "SDRAM Downloading using NuWriter")
-<br>
-Choose type: DDR/SRAM<br>
-<< Press Re-Connect >><br>
-Choose file: Specify your rtthread.bin file.<br>
-Execute Address: 0x0<br>
-Option: Download and run<br>
-<< Press Download >><br>
-Enjoy!! <br>
-<br>
+## Presentation
 
-### 3.2 SPI NOR flash using NuWriter
-You can use NuWriter to program rtthread.bin into SPI NOR flash.
-[![SPI NOR flash](https://i.imgur.com/6Fw3tc7.gif "SPI NOR flash")](https://i.imgur.com/6Fw3tc7.gif "SPI NOR flash using NuWriter")
-<br>
-Choose type: SPI<br>
-<< Press Re-Connect >><br>
-Choose file: Specify your rtthread.bin file.<br>
-Image Type: Loader<br>
-Execute Address: 0x0<br>
-<< Press Program >><br>
-<< Press OK & Wait it down >><br>
-<< Set Power-on setting to SPI NOR booting >><br>
-<< Press Reset button on board >><br>
-Enjoy!! <br>
-<br>
+## Code
 
-## 4. Test
-You can use Tera Term terminate emulator (or other software) to type commands of RTT. All parameters of serial communication are shown in below image. Here, you can find out the corresponding port number of Nuvoton Virtual Com Port in window device manager.
-
-[![Serial settings](https://i.imgur.com/5NYuSNM.png "Serial settings")](https://i.imgur.com/5NYuSNM.png "Serial settings")
-
-## 5. Purchase
-* [Nuvoton Direct](https://direct.nuvoton.com/en/numaker-hmi-n9h30)
-
-## 6. Resources
-* [Board Schematic](https://www.nuvoton.com/resource-download.jsp?tp_GUID=HL1020201117191514)
-* [Download NK-N9H30 Quick Start Guide](https://www.nuvoton.com/resource-download.jsp?tp_GUID=UG1320210329155300)
-* [Download NuWriter](https://github.com/OpenNuvoton/NUC970_NuWriter)
-* [Download Windows 32-bit 6-2017-q1-update ARM GCC](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads/6-2017-q1-update)
+## Summary
